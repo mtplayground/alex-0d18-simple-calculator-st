@@ -1,22 +1,23 @@
+import ButtonGrid from "./components/ButtonGrid";
+import Display from "./components/Display";
+
 function App() {
   return (
-    <main className="min-h-screen bg-neutral-100 px-4 py-10 text-neutral-950">
-      <section className="mx-auto flex min-h-[calc(100vh-5rem)] w-full max-w-md items-center">
-        <div className="w-full rounded-2xl bg-white p-6 shadow-sm ring-1 ring-neutral-200">
+    <main className="min-h-screen bg-neutral-100 px-4 py-8 text-neutral-950 sm:py-10">
+      <section className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-sm items-center sm:min-h-[calc(100vh-5rem)]">
+        <div className="w-full rounded-lg bg-white p-5 shadow-sm ring-1 ring-neutral-200 sm:p-6">
           <header className="mb-6">
             <p className="text-sm font-medium uppercase tracking-wide text-neutral-500">
               Simple Calculator
             </p>
-            <h1 className="mt-2 text-3xl font-semibold tracking-tight">
+            <h1 className="mt-2 text-3xl font-semibold">
               Calculator
             </h1>
           </header>
 
-          <div
-            aria-label="Calculator display"
-            className="flex min-h-24 items-end justify-end rounded-xl bg-neutral-950 px-5 py-4 text-right text-5xl font-semibold text-white"
-          >
-            0
+          <div className="space-y-4">
+            <Display value="0" />
+            <ButtonGrid />
           </div>
         </div>
       </section>
