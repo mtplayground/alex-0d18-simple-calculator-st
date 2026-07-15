@@ -2,20 +2,31 @@ import { useState } from "react";
 import ButtonGrid from "./components/ButtonGrid";
 import Display from "./components/Display";
 import {
-  INITIAL_DISPLAY_VALUE,
-  appendDecimal,
-  appendDigit,
-} from "./lib/calculatorInput";
+  type Operator,
+  calculateResult,
+  chooseOperator,
+  initialCalculatorState,
+  inputDecimal,
+  inputDigit,
+} from "./lib/calculator";
 
 function App() {
-  const [displayValue, setDisplayValue] = useState(INITIAL_DISPLAY_VALUE);
+  const [calculatorState, setCalculatorState] = useState(initialCalculatorState);
 
   function handleDigitPress(digit: string) {
-    setDisplayValue((currentValue) => appendDigit(currentValue, digit));
+    setCalculatorState((currentState) => inputDigit(currentState, digit));
   }
 
   function handleDecimalPress() {
-    setDisplayValue((currentValue) => appendDecimal(currentValue));
+    setCalculatorState((currentState) => inputDecimal(currentState));
+  }
+
+  function handleOperatorPress(operator: Operator) {
+    setCalculatorState((currentState) => chooseOperator(currentState, operator));
+  }
+
+  function handleEqualsPress() {
+    setCalculatorState((currentState) => calculateResult(currentState));
   }
 
   return (
@@ -32,10 +43,12 @@ function App() {
           </header>
 
           <div className="space-y-4">
-            <Display value={displayValue} />
+            <Display value={calculatorState.displayValue} />
             <ButtonGrid
               onDecimalPress={handleDecimalPress}
               onDigitPress={handleDigitPress}
+              onEqualsPress={handleEqualsPress}
+              onOperatorPress={handleOperatorPress}
             />
           </div>
         </div>
