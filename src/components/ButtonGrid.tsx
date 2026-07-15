@@ -2,6 +2,7 @@ import CalculatorButton from "./CalculatorButton";
 import type { Operator } from "../lib/calculator";
 
 type ButtonGridProps = {
+  onClearPress: () => void;
   onDecimalPress: () => void;
   onDigitPress: (digit: string) => void;
   onEqualsPress: () => void;
@@ -45,6 +46,7 @@ const rows = [
 ];
 
 function ButtonGrid({
+  onClearPress,
   onDecimalPress,
   onDigitPress,
   onEqualsPress,
@@ -52,7 +54,11 @@ function ButtonGrid({
 }: ButtonGridProps) {
   return (
     <div className="grid grid-cols-4 gap-3" aria-label="Calculator controls">
-      <CalculatorButton label="Clear or reset" variant="utility">
+      <CalculatorButton
+        label="Clear or reset"
+        onPress={onClearPress}
+        variant="utility"
+      >
         C
       </CalculatorButton>
       <CalculatorButton label="Decimal point" onPress={onDecimalPress}>
