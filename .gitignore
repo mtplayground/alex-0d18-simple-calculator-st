@@ -1,5 +1,7 @@
 target/
+dist/
 node_modules/
+*.tsbuildinfo
 .gh_token
 .database_url
 .task_id
