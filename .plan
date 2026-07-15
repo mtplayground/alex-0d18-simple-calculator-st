@@ -1,0 +1,86 @@
+# Simple Calculator Architecture Plan
+
+## Product Scope
+
+Build a fully client-side single-page calculator using the product direction from Issue #1: React + Tailwind CSS. The app has one main calculator screen, no routing, no backend, and no persistence.
+
+## Module Structure
+
+- `src/main.tsx`
+  - React entry point.
+  - Mounts the root `App`.
+
+- `src/App.tsx`
+  - Owns page-level layout.
+  - Renders the calculator shell as the only screen.
+
+- `src/components/Calculator.tsx`
+  - Container component that wires UI controls to calculator state.
+  - Uses the calculation reducer/actions from `src/lib/calculator`.
+
+- `src/components/Display.tsx`
+  - Receives formatted display text and error state.
+  - Responsible only for rendering the current value/result.
+
+- `src/components/ButtonGrid.tsx`
+  - Renders digit, decimal, operator, equals, and clear buttons.
+  - Emits typed button events instead of performing calculations directly.
+
+- `src/components/CalculatorButton.tsx`
+  - Shared button primitive for consistent sizing, accessibility labels, variants, and disabled/pressed styles.
+
+- `src/lib/calculator.ts`
+  - Pure calculator state machine and calculation helpers.
+  - Exports shared types, initial state, reducer/action handlers, operation execution, display formatting, and edge-case handling.
+  - This module should remain framework-independent so Issue #7 can unit test behavior without rendering React.
+
+- `src/lib/calculator.test.ts`
+  - Unit tests for number entry, operations, chaining, decimals, clear/reset, divide-by-zero, and display formatting.
+
+- `tests/e2e/calculator.spec.ts`
+  - End-to-end tests that open the app, perform a calculation, clear, and start another calculation.
+
+## Shared Types
+
+- `Operator = "add" | "subtract" | "multiply" | "divide"`
+- `CalculatorStatus = "input" | "result" | "error"`
+- `CalculatorState`
+  - `displayValue: string`
+  - `storedValue: number | null`
+  - `pendingOperator: Operator | null`
+  - `waitingForNextValue: boolean`
+  - `status: CalculatorStatus`
+- `CalculatorAction`
+  - `digit`
+  - `decimal`
+  - `operator`
+  - `equals`
+  - `clear`
+
+## Issue Dependencies
+
+- Issue #1 creates the Vite/React/Tailwind foundation, package scripts, base app shell, and global styles.
+- Issue #2 depends on Issue #1 and adds presentational display/button-grid components.
+- Issue #3 depends on the foundation and connects digit/decimal actions to live display state.
+- Issue #4 depends on number entry and adds arithmetic operations, equals behavior, and chained calculations.
+- Issue #5 depends on the calculation engine and display formatting, adding divide-by-zero recovery, clear/reset guarantees, and long-number formatting.
+- Issue #6 depends on the React/Tailwind foundation and can style the existing components without changing calculation behavior.
+- Issue #7 depends on the pure calculator module being available and tests calculation behavior directly.
+- Issue #8 depends on number entry and arithmetic being implemented, then verifies the full user flow in a browser.
+
+Some issue bodies reference dependency labels like `Issue 1.2`, `Issue 2.1`, and `Issue 2.3`; this plan treats those as subtask-style references within the numbered issue sequence above, since only issues #1 through #8 exist.
+
+## Key Design Decisions
+
+- Keep calculator behavior in a pure TypeScript module, separate from React components. This reduces UI coupling and makes unit tests straightforward.
+- Store the editable entry as a string to preserve decimal-entry behavior, avoid premature floating-point conversion while typing, and make display updates immediate.
+- Convert strings to numbers only when applying an operation.
+- Model divide-by-zero as an explicit error state with display text `Error`; `clear` always returns to `initialState`.
+- Use semantic operators internally and display symbols in the UI (`+`, `-`, `x`, `/`) through a small mapping.
+- Cap or format very long display values in `formatDisplayValue` so the display never overflows.
+- Use accessible button labels and stable `data-testid` attributes for the E2E suite.
+- Prefer Vite scripts:
+  - `npm run dev` for local development.
+  - `npm run build` for production bundle validation.
+  - `npm test` for unit tests.
+  - `npm run test:e2e` for Playwright once Issue #8 adds E2E coverage.
