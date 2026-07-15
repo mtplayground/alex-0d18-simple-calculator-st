@@ -5,6 +5,7 @@ import {
   type Operator,
   calculateResult,
   chooseOperator,
+  clearCalculator,
   initialCalculatorState,
   inputDecimal,
   inputDigit,
@@ -29,6 +30,10 @@ function App() {
     setCalculatorState((currentState) => calculateResult(currentState));
   }
 
+  function handleClearPress() {
+    setCalculatorState(clearCalculator());
+  }
+
   return (
     <main className="min-h-screen bg-neutral-100 px-4 py-8 text-neutral-950 sm:py-10">
       <section className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-sm items-center sm:min-h-[calc(100vh-5rem)]">
@@ -43,8 +48,12 @@ function App() {
           </header>
 
           <div className="space-y-4">
-            <Display value={calculatorState.displayValue} />
+            <Display
+              isError={calculatorState.status === "error"}
+              value={calculatorState.displayValue}
+            />
             <ButtonGrid
+              onClearPress={handleClearPress}
               onDecimalPress={handleDecimalPress}
               onDigitPress={handleDigitPress}
               onEqualsPress={handleEqualsPress}
