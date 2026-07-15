@@ -1,7 +1,23 @@
+import { useState } from "react";
 import ButtonGrid from "./components/ButtonGrid";
 import Display from "./components/Display";
+import {
+  INITIAL_DISPLAY_VALUE,
+  appendDecimal,
+  appendDigit,
+} from "./lib/calculatorInput";
 
 function App() {
+  const [displayValue, setDisplayValue] = useState(INITIAL_DISPLAY_VALUE);
+
+  function handleDigitPress(digit: string) {
+    setDisplayValue((currentValue) => appendDigit(currentValue, digit));
+  }
+
+  function handleDecimalPress() {
+    setDisplayValue((currentValue) => appendDecimal(currentValue));
+  }
+
   return (
     <main className="min-h-screen bg-neutral-100 px-4 py-8 text-neutral-950 sm:py-10">
       <section className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-sm items-center sm:min-h-[calc(100vh-5rem)]">
@@ -16,8 +32,11 @@ function App() {
           </header>
 
           <div className="space-y-4">
-            <Display value="0" />
-            <ButtonGrid />
+            <Display value={displayValue} />
+            <ButtonGrid
+              onDecimalPress={handleDecimalPress}
+              onDigitPress={handleDigitPress}
+            />
           </div>
         </div>
       </section>

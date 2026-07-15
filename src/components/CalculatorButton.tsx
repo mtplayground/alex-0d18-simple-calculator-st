@@ -6,6 +6,7 @@ type CalculatorButtonProps = {
   children: ReactNode;
   label: string;
   variant?: CalculatorButtonVariant;
+  onPress?: () => void;
   className?: string;
 };
 
@@ -20,12 +21,14 @@ function CalculatorButton({
   children,
   label,
   variant = "number",
+  onPress,
   className = "",
 }: CalculatorButtonProps) {
   return (
     <button
       type="button"
       aria-label={label}
+      onClick={onPress}
       className={`flex h-14 min-w-0 items-center justify-center rounded-lg text-xl font-semibold shadow-sm ring-1 transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:scale-[0.98] sm:h-16 ${variantClassName[variant]} ${className}`}
     >
       {children}
