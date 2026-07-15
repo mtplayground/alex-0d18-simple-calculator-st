@@ -1,5 +1,10 @@
 import CalculatorButton from "./CalculatorButton";
 
+type ButtonGridProps = {
+  onDecimalPress: () => void;
+  onDigitPress: (digit: string) => void;
+};
+
 const rows = [
   [
     { label: "7", ariaLabel: "Digit 7" },
@@ -21,13 +26,15 @@ const rows = [
   ],
 ];
 
-function ButtonGrid() {
+function ButtonGrid({ onDecimalPress, onDigitPress }: ButtonGridProps) {
   return (
     <div className="grid grid-cols-4 gap-3" aria-label="Calculator controls">
       <CalculatorButton label="Clear or reset" variant="utility">
         C
       </CalculatorButton>
-      <CalculatorButton label="Decimal point">.</CalculatorButton>
+      <CalculatorButton label="Decimal point" onPress={onDecimalPress}>
+        .
+      </CalculatorButton>
       <CalculatorButton label="Equals" variant="equals">
         =
       </CalculatorButton>
@@ -40,6 +47,11 @@ function ButtonGrid() {
           <CalculatorButton
             key={button.ariaLabel}
             label={button.ariaLabel}
+            onPress={
+              button.variant === undefined
+                ? () => onDigitPress(button.label)
+                : undefined
+            }
             variant={button.variant}
           >
             {button.label}
@@ -47,7 +59,11 @@ function ButtonGrid() {
         )),
       )}
 
-      <CalculatorButton label="Digit 0" className="col-span-4">
+      <CalculatorButton
+        label="Digit 0"
+        className="col-span-4"
+        onPress={() => onDigitPress("0")}
+      >
         0
       </CalculatorButton>
     </div>
