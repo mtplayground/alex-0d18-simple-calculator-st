@@ -35,11 +35,11 @@ function App() {
   }
 
   return (
-    <main className="min-h-screen bg-neutral-100 px-4 py-8 text-neutral-950 sm:py-10">
-      <section className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-sm items-center sm:min-h-[calc(100vh-5rem)]">
-        <div className="w-full rounded-lg bg-white p-5 shadow-sm ring-1 ring-neutral-200 sm:p-6">
-          <header className="mb-6">
-            <p className="text-sm font-medium uppercase tracking-wide text-neutral-500">
+    <main className="min-h-screen bg-neutral-50 px-4 py-10 text-neutral-950 sm:py-14">
+      <section className="mx-auto flex min-h-[calc(100vh-5rem)] w-full max-w-sm items-center sm:min-h-[calc(100vh-7rem)]">
+        <div className="w-full rounded-lg bg-white p-6 shadow-[0_18px_50px_rgba(15,23,42,0.08)] ring-1 ring-neutral-200/80 sm:p-7">
+          <header className="mb-8">
+            <p className="text-sm font-medium text-neutral-500">
               Simple Calculator
             </p>
             <h1 className="mt-2 text-3xl font-semibold">
@@ -47,7 +47,7 @@ function App() {
             </h1>
           </header>
 
-          <div className="space-y-4">
+          <div className="space-y-5">
             <Display
               isError={calculatorState.status === "error"}
               value={calculatorState.displayValue}
